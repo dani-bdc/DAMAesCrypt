@@ -45,5 +45,23 @@ internal class Program
         }
 
         Console.WriteLine("Encripted text:" + Convert.ToBase64String(encryptedData));
+
+        string originalText;
+        // Decrypt data
+        ICryptoTransform decryptor = aes.CreateDecryptor();
+
+        using (MemoryStream ms = new MemoryStream(encryptedData))
+        {
+            using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+            {
+                using (StreamReader sr = new StreamReader(cs))
+                {
+                    originalText = sr.ReadToEnd();
+                }
+            }
+        }
+
+        Console.WriteLine("Original text after decrypt:" + originalText);
+
     }
 }
